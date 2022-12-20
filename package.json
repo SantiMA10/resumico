@@ -1,0 +1,12 @@
+{
+  "name": "@santima10/audio2summary",
+  "version": "0.0.1",
+  "main": "index.js",
+  "private": true,
+  "repository": "git@github.com:SantiMA10/audio2summary.git",
+  "author": {
+    "name": "Santiago Martin Agra",
+    "email": "opensource+audio2summary@santiagomartin.dev"
+  },
+  "license": "CC-BY-NC-4.0"
+}
