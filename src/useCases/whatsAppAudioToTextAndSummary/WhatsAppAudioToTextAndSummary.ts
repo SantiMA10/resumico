@@ -1,3 +1,4 @@
+import { Config } from '../../config';
 import { AudioWhatsAppMessage } from '../../entities/whatsAppMessages/AudioWhatsAppMessage';
 import { WhatsAppService } from '../../services/message/WhatsAppService';
 import { SpeechToTextService } from '../../services/speechToText/SpeechToTextService';
@@ -8,6 +9,7 @@ export class WhatsAppAudioToTextAndSummary {
 		private messageService: WhatsAppService,
 		private speechToTextService: SpeechToTextService,
 		private summarizeService: SummaryService,
+		private config: Config,
 	) {}
 
 	public async process(audio: AudioWhatsAppMessage) {
@@ -34,7 +36,7 @@ export class WhatsAppAudioToTextAndSummary {
 		);
 		await this.messageService.addReaction(messageId, '✅', userNumber);
 
-		if (duration > 60000) {
+		if (duration >= this.config.summary.durationForSummary) {
 			const summary = await this.summarizeService.summarize(text);
 			if (!summary) {
 				console.log('skipping summary due to an error in the service');

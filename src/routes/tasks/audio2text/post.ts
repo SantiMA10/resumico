@@ -29,6 +29,7 @@ export const routes = (): ServerRoute[] => {
 						messageService,
 						speechToText,
 						summary,
+						config,
 					);
 					await audio2textAndSummary.process(
 						JSON.parse(req.payload as string) as AudioWhatsAppMessage,

@@ -18,7 +18,7 @@ export class WhisperSpeechToTextService implements SpeechToTextService {
 		const { path } = this.config.files;
 		execSync(`whisper ${filePath} --model tiny -o ${path}`); // , { stdio: 'inherit' }
 		const text = (await readFile(`${filePath}.txt`)).toString();
-		const duration = await getAudioDurationInSeconds(filePath);
+		const duration = (await getAudioDurationInSeconds(filePath)) * 1000;
 
 		await Promise.all([
 			unlink(filePath),
