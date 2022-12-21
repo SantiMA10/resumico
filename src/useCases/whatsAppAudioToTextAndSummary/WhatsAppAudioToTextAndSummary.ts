@@ -32,6 +32,7 @@ export class WhatsAppAudioToTextAndSummary {
 			},
 			messageId,
 		);
+		await this.messageService.addReaction(messageId, '✅', userNumber);
 
 		if (duration > 60000) {
 			const summary = await this.summarizeService.summarize(text);

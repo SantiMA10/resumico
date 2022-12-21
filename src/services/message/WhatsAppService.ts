@@ -21,6 +21,58 @@ export class WhatsAppService {
 		return { filePath };
 	}
 
+	public async markAsRead(messageId: string): Promise<void> {
+		const { apiVersion, sender, token } = this.config.whatsapp;
+
+		const messageResponse = await fetch(
+			`https://graph.facebook.com/${apiVersion}/${sender}/messages`,
+			{
+				method: 'POST',
+				headers: {
+					'authorization': `Bearer ${token}`,
+					'content-type': 'application/json',
+				},
+				body: JSON.stringify({
+					messaging_product: 'whatsapp',
+					status: 'read',
+					message_id: messageId,
+				}),
+			},
+		);
+
+		if (!messageResponse.ok) {
+			console.log(await messageResponse.text());
+		}
+	}
+
+	public async addReaction(messageId: string, emoji: string, to: string): Promise<void> {
+		const { apiVersion, sender, token } = this.config.whatsapp;
+
+		const messageResponse = await fetch(
+			`https://graph.facebook.com/${apiVersion}/${sender}/messages`,
+			{
+				method: 'POST',
+				headers: {
+					'authorization': `Bearer ${token}`,
+					'content-type': 'application/json',
+				},
+				body: JSON.stringify({
+					messaging_product: 'whatsapp',
+					type: 'reaction',
+					to,
+					reaction: {
+						message_id: messageId,
+						emoji,
+					},
+				}),
+			},
+		);
+
+		if (!messageResponse.ok) {
+			console.log(await messageResponse.text());
+		}
+	}
+
 	public async sendMessage(
 		to: string,
 		message: { body: string; header: string },
