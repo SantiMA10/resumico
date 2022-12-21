@@ -11,7 +11,8 @@ const config = z.object({
 		project: z.string(),
 		queue: z.string(),
 		location: z.string(),
-		path: z.string(),
+		mode: z.string().regex(/appengine|http/),
+		url: z.string(),
 	}),
 	files: z.object({
 		path: z.string(),
@@ -19,6 +20,9 @@ const config = z.object({
 	}),
 	openai: z.object({
 		token: z.string(),
+	}),
+	speechToText: z.object({
+		service: z.string().regex(/google|whisper/),
 	}),
 });
 
@@ -33,7 +37,8 @@ const testConfig: Config = {
 		project: 'project',
 		queue: 'queue',
 		location: 'location',
-		path: '/test',
+		mode: 'appengine',
+		url: '/tasks',
 	},
 	files: {
 		path: '/tmp',
@@ -41,6 +46,9 @@ const testConfig: Config = {
 	},
 	openai: {
 		token: 'token',
+	},
+	speechToText: {
+		service: 'whisper',
 	},
 };
 
@@ -55,7 +63,8 @@ const envConfig = {
 		project: process.env.GCLOUD_PROJECT,
 		queue: process.env.GCLOUD_TASK_QUEUE,
 		location: process.env.GCLOUD_LOCATION,
-		path: process.env.GCLOUD_TASK_PATH,
+		mode: process.env.GCLOUD_TASK_MODE,
+		url: process.env.GCLOUD_TASK_URL,
 	},
 	files: {
 		path: process.env.FILE_DOWNLOAD_PATH,
@@ -63,6 +72,9 @@ const envConfig = {
 	},
 	openai: {
 		token: process.env.OPEN_AI_GPT3_TOKEN,
+	},
+	speechToText: {
+		service: process.env.SPEECH_TO_TEXT_SERVICE,
 	},
 };
 

@@ -16,8 +16,10 @@
     "start:dev": "ts-node-dev -r dotenv/config --ignore-watch node_modules ./src/index.ts",
     "test": "APP_ENV=\"test\" jest",
     "test:watch": "yarn test --watch",
-    "predeploy": "rm -rf ./dist && yarn build",
-    "deploy": "gcloud app deploy"
+    "predeploy:app": "rm -rf ./dist && yarn build",
+    "deploy:app": "gcloud app deploy",
+    "predeploy:run": "rm -rf ./dist && yarn build",
+    "deploy:run": "gcloud run deploy --max-instances 1 --cpu 1 --memory 2Gi --source ."
   },
   "dependencies": {
     "@google-cloud/speech": "^5.1.0",
@@ -26,6 +28,7 @@
     "@hapi/hapi": "^21.1.0",
     "dotenv": "^16.0.3",
     "fluent-ffmpeg": "^2.1.2",
+    "get-audio-duration": "^3.1.1",
     "get-mp3-duration": "^1.0.0",
     "http-status-codes": "^2.2.0",
     "node-fetch": "2",
