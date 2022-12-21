@@ -16,6 +16,7 @@
     "start:dev": "ts-node-dev -r dotenv/config --ignore-watch node_modules ./src/index.ts",
     "test": "APP_ENV=\"test\" jest",
     "test:watch": "yarn test --watch",
+    "predeploy": "rm -rf ./dist && yarn build",
     "deploy": "gcloud app deploy"
   },
   "dependencies": {
