@@ -15,7 +15,7 @@ export class WhatsAppService {
 		const audioRequest = await fetch(`https://graph.facebook.com/${apiVersion}/${audioId}`, config);
 		const { url } = await audioRequest.json();
 		const fileRequest = await fetch(url, config);
-		const filePath = path.join(fileBasePath, './input.ogg');
+		const filePath = path.join(fileBasePath, `./${audioId}.ogg`);
 		await writeFile(filePath, await fileRequest.buffer());
 
 		return { filePath };

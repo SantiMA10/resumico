@@ -1,3 +1,3 @@
 export interface SpeechToTextService {
-	transcribe(filePath: string): Promise<{ text: string; duration: number }>;
+	transcribe(filePath: string, audioId: string): Promise<{ text: string; duration: number }>;
 }

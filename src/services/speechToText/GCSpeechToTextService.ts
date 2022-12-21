@@ -13,13 +13,16 @@ import { SpeechToTextService } from './SpeechToTextService';
 export class GCSpeechToTextService implements SpeechToTextService {
 	public constructor(private config: Config) {}
 
-	public async transcribe(filePath: string): Promise<{ text: string; duration: number }> {
-		const mp3FilePath = await this.audioToMp3(filePath);
+	public async transcribe(
+		filePath: string,
+		audioId: string,
+	): Promise<{ text: string; duration: number }> {
+		const mp3FilePath = await this.audioToMp3(filePath, audioId);
 		const duration = await this.audioDuration(mp3FilePath);
-		const bucketUri = await this.uploadFile(mp3FilePath);
+		const bucketUri = await this.uploadFileFromBucket(mp3FilePath, audioId);
 		const text = await this.transcribeAudioFile(bucketUri);
 
-		await unlink(filePath);
+		await Promise.all([unlink(filePath), unlink(mp3FilePath), this.removeFileFromBucket(audioId)]);
 		return { text, duration };
 	}
 
@@ -47,9 +50,9 @@ export class GCSpeechToTextService implements SpeechToTextService {
 		return response.results.map((result) => result?.alternatives?.[0].transcript).join('. ');
 	}
 
-	private async uploadFile(filePath: string): Promise<string> {
+	private async uploadFileFromBucket(filePath: string, audioId: string): Promise<string> {
 		const { bucket } = this.config.files;
-		const fileName = 'output.mp3';
+		const fileName = `${audioId}.mp3`;
 
 		const storage = new Storage();
 		await storage.bucket(bucket).upload(filePath, { destination: fileName });
@@ -57,13 +60,21 @@ export class GCSpeechToTextService implements SpeechToTextService {
 		return `gs://${bucket}/${fileName}`;
 	}
 
+	private async removeFileFromBucket(audioId: string): Promise<void> {
+		const { bucket } = this.config.files;
+		const fileName = `${audioId}.mp3`;
+
+		const storage = new Storage();
+		await storage.bucket(bucket).file(fileName).delete();
+	}
+
 	private async audioDuration(filePath: string): Promise<number> {
 		return getMP3Duration(await readFile(filePath));
 	}
 
-	private async audioToMp3(inputFilePath: string): Promise<string> {
+	private async audioToMp3(inputFilePath: string, audioId: string): Promise<string> {
 		const { path: fileBasePath } = this.config.files;
-		const outputFilePath = path.join(fileBasePath, './output.mp3');
+		const outputFilePath = path.join(fileBasePath, `./${audioId}.mp3`);
 
 		return await new Promise((resolve) => {
 			const ffmpegCommand = ffmpeg(inputFilePath)

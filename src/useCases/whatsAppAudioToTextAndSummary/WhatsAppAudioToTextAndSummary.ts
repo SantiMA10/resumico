@@ -22,7 +22,7 @@ export class WhatsAppAudioToTextAndSummary {
 		const messageId = message.id;
 
 		const { filePath } = await this.messageService.downloadAudio(audioId);
-		const { duration, text } = await this.speechToTextService.transcribe(filePath);
+		const { duration, text } = await this.speechToTextService.transcribe(filePath, audioId);
 
 		await this.messageService.sendMessage(
 			userNumber,
