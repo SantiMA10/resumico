@@ -2,6 +2,8 @@ import * as speech from '@google-cloud/speech';
 import { Storage } from '@google-cloud/storage';
 import ffmpeg from 'fluent-ffmpeg';
 import { readFile, unlink } from 'fs/promises';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import getMP3Duration from 'get-mp3-duration';
 import path from 'path';
 
