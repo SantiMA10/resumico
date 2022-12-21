@@ -124,7 +124,7 @@ export class WhatsAppService {
 					text,
 				},
 				footer: {
-					text: 'Powered by @SantiMA10',
+					text: 'Hecho con ❤️ por @SantiMA10',
 				},
 				action: {
 					buttons: [
@@ -132,14 +132,7 @@ export class WhatsAppService {
 							type: 'reply',
 							reply: {
 								id: 'unique-id-123',
-								title: 'Muy buena',
-							},
-						},
-						{
-							type: 'reply',
-							reply: {
-								id: 'unique-id-456',
-								title: 'Muy mejorable',
+								title: 'Hola',
 							},
 						},
 					],
