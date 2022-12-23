@@ -75,7 +75,7 @@ export class WhatsAppService {
 
 	public async sendMessage(
 		to: string,
-		message: { body: string; header: string },
+		message: { body: string; header?: string },
 		reply?: string,
 	): Promise<void> {
 		const { apiVersion, sender, token } = this.config.whatsapp;
@@ -91,7 +91,7 @@ export class WhatsAppService {
 				body: JSON.stringify({
 					messaging_product: 'whatsapp',
 					to,
-					...this.generateBody(message.header, message.body),
+					...this.generateBody(message.body, message.header),
 					...(reply && { context: { message_id: reply } }),
 				}),
 			},
@@ -102,12 +102,12 @@ export class WhatsAppService {
 		}
 	}
 
-	private generateBody(header: string, text: string) {
+	private generateBody(text: string, header: string | undefined) {
 		if (text.length > 1024) {
 			return {
 				type: 'text',
 				text: {
-					body: `*${header}* ${text}`,
+					body: header ? `*${header}* ${text}` : text,
 				},
 			};
 		}
@@ -116,10 +116,12 @@ export class WhatsAppService {
 			type: 'interactive',
 			interactive: {
 				type: 'button',
-				header: {
-					type: 'text',
-					text: header,
-				},
+				...(header && {
+					header: {
+						type: 'text',
+						text: header,
+					},
+				}),
 				body: {
 					text,
 				},
