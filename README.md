@@ -1,4 +1,4 @@
-# 🤖 audio2summary
+# 📝 resumico
 
 > A WhatApp bot to transcribe and summarize audio messages.
 
