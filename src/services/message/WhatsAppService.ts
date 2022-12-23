@@ -21,6 +21,53 @@ export class WhatsAppService {
 		return { filePath };
 	}
 
+	public async sendMessageWithButtons(
+		options: { text: string; to: string; buttons: Array<{ id: string; text: string }> },
+		reply?: string,
+	) {
+		const { apiVersion, sender, token } = this.config.whatsapp;
+
+		const messageResponse = await fetch(
+			`https://graph.facebook.com/${apiVersion}/${sender}/messages`,
+			{
+				method: 'POST',
+				headers: {
+					'authorization': `Bearer ${token}`,
+					'content-type': 'application/json',
+				},
+				body: JSON.stringify({
+					messaging_product: 'whatsapp',
+					status: 'read',
+					to: options.to,
+					type: 'interactive',
+					interactive: {
+						type: 'button',
+						body: {
+							text: options.text,
+						},
+						footer: {
+							text: 'Hecho con ❤️ por @SantiMA10',
+						},
+						action: {
+							buttons: options.buttons.map((button) => ({
+								type: 'reply',
+								reply: {
+									id: button.id,
+									title: button.text,
+								},
+							})),
+						},
+					},
+					...(reply && { context: { message_id: reply } }),
+				}),
+			},
+		);
+
+		if (!messageResponse.ok) {
+			console.log(await messageResponse.text());
+		}
+	}
+
 	public async markAsRead(messageId: string): Promise<void> {
 		const { apiVersion, sender, token } = this.config.whatsapp;
 

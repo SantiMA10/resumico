@@ -1,4 +1,5 @@
 import { AudioWhatsAppMessage } from '../../entities/whatsAppMessages/AudioWhatsAppMessage';
+import { ReplyWhatsAppMessage } from '../../entities/whatsAppMessages/ReplyWhatsAppMessage';
 import { WhatsAppMessage } from '../../entities/whatsAppMessages/WhatsAppMessage';
 import { WhatsAppService } from '../../services/message/WhatsAppService';
 
@@ -17,7 +18,7 @@ export class ReceiveWhatsApp {
 
 		const from = message.entry?.[0]?.changes?.[0].value.messages?.[0]?.from;
 
-		if (!this.isAudioMessage(message)) {
+		if (!this.isAudioMessage(message) && !this.isReplyMessage(message)) {
 			if (messageId) {
 				await this.messageService.addReaction(messageId, '❌', from);
 			}
@@ -26,11 +27,57 @@ export class ReceiveWhatsApp {
 
 		await Promise.all([
 			this.messageService.addReaction(messageId, '⏳', from),
-			this.taskService.createTask({ body: message }),
+			this.taskService.createTask({ body: this.createTaskBody(message) }),
 		]);
 	}
 
 	private isAudioMessage(message: WhatsAppMessage): message is AudioWhatsAppMessage {
 		return message?.entry?.[0]?.changes?.[0]?.value?.messages?.[0]?.type === 'audio';
+	}
+
+	private isReplyMessage(
+		receivedMessage: WhatsAppMessage,
+	): receivedMessage is ReplyWhatsAppMessage {
+		const message = receivedMessage?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+
+		return message?.type === 'interactive' && message?.interactive?.type === 'button_reply';
+	}
+
+	private createTaskBody(received: ReplyWhatsAppMessage | AudioWhatsAppMessage) {
+		const message = received?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+
+		if (message.type === 'audio') {
+			return {
+				name: 'ask-audio-options',
+				messageId: message.id,
+				audioId: message.audio.id,
+				user: message.from,
+			};
+		}
+
+		if (message.interactive.button_reply.id.includes('transcription')) {
+			return {
+				name: 'transcription',
+				messageId: message.id,
+				audioId: message.interactive.button_reply.id.split(':')[1],
+				user: message.from,
+			};
+		}
+
+		if (message.interactive.button_reply.id.includes('summary')) {
+			return {
+				name: 'summary',
+				messageId: message.id,
+				audioId: message.interactive.button_reply.id.split(':')[1],
+				user: message.from,
+			};
+		}
+
+		return {
+			name: 'transcription-and-summary',
+			messageId: message.id,
+			audioId: message.interactive.button_reply.id.split(':')[1],
+			user: message.from,
+		};
 	}
 }
