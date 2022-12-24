@@ -1,3 +1,5 @@
+<img src="./.github/resumico.svg" align="center">
+
 # 📝 resumico
 
 > A WhatApp bot to transcribe and summarize audio messages.
