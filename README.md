@@ -1,5 +1,5 @@
 <p align="center">
-   <a href="https://resumi.co">
+   <a href="https://www.resumi.co">
       <img src="./.github/resumico.png">
    </a>
    <p align="center">
@@ -15,7 +15,7 @@
 </p>
 
 > **Note**
-> También te puedes apuntar a [la lista de espera](https://resumi.co) para la alpha.
+> También te puedes apuntar a [la lista de espera](https://www.resumi.co) para la alpha.
 
 # Requisitos
 
