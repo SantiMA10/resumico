@@ -1,6 +1,6 @@
 <p align="center">
    <a href="https://resumi.co">
-      <img src="./.github/resumico.svg">
+      <img src="./.github/resumico.png">
    </a>
    <p align="center">
       <a href="#requirements">🧰 Requirements</a> -
