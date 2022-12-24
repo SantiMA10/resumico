@@ -1,5 +1,5 @@
-import { Config, getConfig } from '../../../../src/config';
-import { VerifyWhatsAppWebhook } from '../../../../src/useCases/verifyWhatsAppWebhook/VerifyWhatsAppWebhook';
+import { Config, getConfig } from '../../../src/config';
+import { VerifyWhatsAppWebhook } from '../../../src/useCases/verifyWhatsAppWebhook/VerifyWhatsAppWebhook';
 
 describe('VerifyWhatsAppWebhook', () => {
 	let config: Config;

@@ -2,13 +2,14 @@ import { Request, ResponseToolkit, ServerRoute } from '@hapi/hapi';
 import { StatusCodes } from 'http-status-codes';
 
 import { getConfig } from '../../config';
-import { AudioWhatsAppMessage } from '../../entities/whatsAppMessages/AudioWhatsAppMessage';
 import { WhatsAppService } from '../../services/message/WhatsAppService';
 import { GCSpeechToTextService } from '../../services/speechToText/GCSpeechToTextService';
 import { WhisperSpeechToTextService } from '../../services/speechToText/WhisperSpeechToTextService';
 import { GPT3SummaryService } from '../../services/summary/GPT3SummaryService';
 import { AskAudioOptions } from '../../useCases/askAudioOptions/AskAudioOptions';
-import { WhatsAppAudioToTextAndSummary } from '../../useCases/whatsAppAudioToTextAndSummary/WhatsAppAudioToTextAndSummary';
+import { SendSummary } from '../../useCases/sendSummary/SendSummary';
+import { SendTranscription } from '../../useCases/sendTranscription/SendTranscription';
+import { SendTranscriptionAndSummary } from '../../useCases/sendTranscriptionAndSummary/SendTranscriptionAndSummary';
 
 export const routes = (): ServerRoute[] => {
 	return [
@@ -39,19 +40,42 @@ export const routes = (): ServerRoute[] => {
 						return h.response().code(StatusCodes.NO_CONTENT);
 					}
 
-					if ('name' in payload) {
-						console.log(payload);
+					if ('name' in payload && payload.name === 'transcription-and-summary') {
+						const sendTranscriptionAndSummary = new SendTranscriptionAndSummary(
+							messageService,
+							speechToText,
+							summary,
+						);
+						await sendTranscriptionAndSummary.process({
+							messageId: payload.messageId,
+							audioId: payload.audioId,
+							user: payload.user,
+						});
 
 						return h.response().code(StatusCodes.NO_CONTENT);
 					}
 
-					const audio2textAndSummary = new WhatsAppAudioToTextAndSummary(
-						messageService,
-						speechToText,
-						summary,
-						config,
-					);
-					await audio2textAndSummary.process(payload as AudioWhatsAppMessage);
+					if ('name' in payload && payload.name === 'transcription') {
+						const sendTranscription = new SendTranscription(messageService, speechToText);
+						await sendTranscription.process({
+							messageId: payload.messageId,
+							audioId: payload.audioId,
+							user: payload.user,
+						});
+
+						return h.response().code(StatusCodes.NO_CONTENT);
+					}
+
+					if ('name' in payload && payload.name === 'summary') {
+						const sendSummary = new SendSummary(messageService, speechToText, summary);
+						await sendSummary.process({
+							messageId: payload.messageId,
+							audioId: payload.audioId,
+							user: payload.user,
+						});
+
+						return h.response().code(StatusCodes.NO_CONTENT);
+					}
 				} catch (error) {
 					console.error(error);
 				}

@@ -1,5 +1,5 @@
-import { WhatsAppService } from '../../../../src/services/message/WhatsAppService';
-import { AskAudioOptions } from '../../../../src/useCases/askAudioOptions/AskAudioOptions';
+import { WhatsAppService } from '../../../src/services/message/WhatsAppService';
+import { AskAudioOptions } from '../../../src/useCases/askAudioOptions/AskAudioOptions';
 
 describe('AskAudioOptions', () => {
 	let messageService: WhatsAppService;

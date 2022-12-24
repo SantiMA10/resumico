@@ -1,9 +1,9 @@
-import { WhatsAppService } from '../../../../src/services/message/WhatsAppService';
-import { TaskService } from '../../../../src/services/task/TaskService';
-import { ReceiveWhatsApp } from '../../../../src/useCases/receiveWhatsApp/ReceiveWhatsApp';
-import { AudioMessageBuilder } from '../../../builders/AudioMessageBuilder';
-import { ReplyMessageBuilder } from '../../../builders/ReplyMessageBuilder';
-import { TextMessageBuilder } from '../../../builders/TextMessageBuilder';
+import { WhatsAppService } from '../../../src/services/message/WhatsAppService';
+import { TaskService } from '../../../src/services/task/TaskService';
+import { ReceiveWhatsApp } from '../../../src/useCases/receiveWhatsApp/ReceiveWhatsApp';
+import { AudioMessageBuilder } from '../../builders/AudioMessageBuilder';
+import { ReplyMessageBuilder } from '../../builders/ReplyMessageBuilder';
+import { TextMessageBuilder } from '../../builders/TextMessageBuilder';
 
 describe('ReceiveWhatsApp', () => {
 	let subject: ReceiveWhatsApp;
