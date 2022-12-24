@@ -42,7 +42,8 @@ export class GCSpeechToTextService implements SpeechToTextService {
 			},
 		};
 
-		const [response] = await client.recognize(request);
+		const [operation] = await client.longRunningRecognize(request);
+		const [response] = await operation.promise();
 		if (!response || !response.results) {
 			return '';
 		}
