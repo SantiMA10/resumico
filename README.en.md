@@ -1,8 +1,9 @@
 <p align="center">
    <img src="./.github/resumico.svg">
    <p align="center">
-      <a href="#requirements">🛠️ Requirements</a> -
-      <a href="#configuration">🚀 Configuration</a> - 
+      <a href="#requirements">🧰 Requirements</a> -
+      <a href="#configuration">🛠️ Configuration</a> - 
+      <a href="#deploy">🚀 Deploy</a> - 
       <a href="#license">⚖️ License</a> - 
       <a href="./README.md">🌍 Español</a>
    </p>
@@ -47,6 +48,21 @@ TASK_SERVICE="" // A value between "google" (if you want to use Google Cloud Tas
 
 SPEECH_TO_TEXT_SERVICE="" // A value between "google" (if you want to use Google Cloud Speech to Text) or "whisper" (if you want to use whisper).
 ```
+
+# Deploy
+
+```
+yarn build // to build ts into js
+yarn start // to start the server
+```
+
+# Contributing
+
+Thank you for considering contributing to the DevOps for Stream Deck. Feel free to send in any pull requests.
+
+# Support the project
+
+If you like the project, you can subscribe to my [Twitch channel](https://www.twitch.tv/santima10), where I do live coding of this and other projects.
 
 # License
 
