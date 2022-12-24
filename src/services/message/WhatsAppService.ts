@@ -127,38 +127,40 @@ export class WhatsAppService {
 	): Promise<void> {
 		const { apiVersion, sender, token } = this.config.whatsapp;
 
-		const messageResponse = await fetch(
-			`https://graph.facebook.com/${apiVersion}/${sender}/messages`,
-			{
-				method: 'POST',
-				headers: {
-					'authorization': `Bearer ${token}`,
-					'content-type': 'application/json',
-				},
-				body: JSON.stringify({
-					messaging_product: 'whatsapp',
-					to,
-					...this.generateBody(message.body, message.header),
-					...(reply && { context: { message_id: reply } }),
-				}),
-			},
-		);
+		const bodies = message.body.match(/.{1,1000}/g);
+		let previousMessageId = reply;
 
-		if (!messageResponse.ok) {
-			console.log(await messageResponse.text());
+		if (!bodies) {
+			return;
+		}
+
+		for (const body of bodies) {
+			const messageResponse = await fetch(
+				`https://graph.facebook.com/${apiVersion}/${sender}/messages`,
+				{
+					method: 'POST',
+					headers: {
+						'authorization': `Bearer ${token}`,
+						'content-type': 'application/json',
+					},
+					body: JSON.stringify({
+						messaging_product: 'whatsapp',
+						to,
+						...this.generateBody(body, message.header),
+						...(reply && { context: { message_id: previousMessageId } }),
+					}),
+				},
+			);
+
+			if (!messageResponse.ok) {
+				console.log(await messageResponse.text());
+			}
+
+			previousMessageId = (await messageResponse.json())?.messages?.[0]?.id;
 		}
 	}
 
 	private generateBody(text: string, header: string | undefined) {
-		if (text.length > 1024) {
-			return {
-				type: 'text',
-				text: {
-					body: header ? `*${header}* ${text}` : text,
-				},
-			};
-		}
-
 		return {
 			type: 'interactive',
 			interactive: {
@@ -180,8 +182,8 @@ export class WhatsAppService {
 						{
 							type: 'reply',
 							reply: {
-								id: 'unique-id-123',
-								title: 'Hola',
+								id: 'configuration',
+								title: 'Configuración',
 							},
 						},
 					],
