@@ -61,11 +61,11 @@ yarn start // para arrancar el servidor
 
 # Contribuciones
 
-Gracias por pensar en ayudar al proyecto, si encuentras algo que te apetece añadir/mejorar, no dudes en abrir una issue y/o una pull request.
+Gracias por pensar en ayudar al proyecto, si encuentras algo que te apetece añadir/mejorar o alguna cosa que no funciona, no dudes en abrir una issue y/o una pull request.
 
 # Apoya el proyecto
 
-Si te gusta el proyecto puedes suscribirte a [canal de Twitch](https://www.twitch.tv/santima10), donde (a veces) hago proyectos como este en directo.
+Si te gusta el proyecto puedes suscribirte a mi [canal de Twitch](https://www.twitch.tv/santima10), donde (a veces) hago proyectos como este en directo.
 
 # Licencia
 
