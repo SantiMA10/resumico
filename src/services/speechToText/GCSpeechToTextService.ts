@@ -17,13 +17,23 @@ export class GCSpeechToTextService implements SpeechToTextService {
 		filePath: string,
 		audioId: string,
 	): Promise<{ text: string; duration: number }> {
-		const mp3FilePath = await this.audioToMp3(filePath, audioId);
-		const duration = await this.audioDuration(mp3FilePath);
-		const bucketUri = await this.uploadFileFromBucket(mp3FilePath, audioId);
-		const text = await this.transcribeAudioFile(bucketUri);
+		try {
+			const mp3FilePath = await this.audioToMp3(filePath, audioId);
+			const duration = await this.audioDuration(mp3FilePath);
+			const bucketUri = await this.uploadFileFromBucket(mp3FilePath, audioId);
+			const text = await this.transcribeAudioFile(bucketUri);
 
-		await Promise.all([unlink(filePath), unlink(mp3FilePath), this.removeFileFromBucket(audioId)]);
-		return { text, duration };
+			await Promise.all([
+				unlink(filePath),
+				unlink(mp3FilePath),
+				this.removeFileFromBucket(audioId),
+			]);
+			return { text, duration };
+		} catch (error) {
+			await Promise.all([unlink(filePath), this.removeFileFromBucket(audioId)]);
+
+			throw error;
+		}
 	}
 
 	private async transcribeAudioFile(bucketUri: string): Promise<string> {

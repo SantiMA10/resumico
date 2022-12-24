@@ -14,19 +14,28 @@ export class WhisperSpeechToTextService implements SpeechToTextService {
 			console.log('[WhisperSpeechToTextService] File does not exists');
 			return { text: '', duration: 0 };
 		}
+		try {
+			const { path } = this.config.files;
+			execSync(`whisper ${filePath} --model tiny -o ${path}`); // , { stdio: 'inherit' }
+			const text = (await readFile(`${filePath}.txt`)).toString();
+			const duration = (await getAudioDurationInSeconds(filePath)) * 1000;
 
-		const { path } = this.config.files;
-		execSync(`whisper ${filePath} --model tiny -o ${path}`); // , { stdio: 'inherit' }
-		const text = (await readFile(`${filePath}.txt`)).toString();
-		const duration = (await getAudioDurationInSeconds(filePath)) * 1000;
+			await this.removeAllFiles(filePath);
 
+			return { text: text.replaceAll('\n', ''), duration };
+		} catch (error) {
+			await this.removeAllFiles(filePath);
+
+			throw error;
+		}
+	}
+
+	private async removeAllFiles(filePath: string) {
 		await Promise.all([
 			unlink(filePath),
 			unlink(`${filePath}.txt`),
 			unlink(`${filePath}.vtt`),
 			unlink(`${filePath}.srt`),
 		]);
-
-		return { text: text.replaceAll('\n', ''), duration };
 	}
 }
