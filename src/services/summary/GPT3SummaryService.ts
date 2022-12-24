@@ -32,7 +32,6 @@ export class GPT3SummaryService implements SummaryService {
 		}
 
 		const json = await summaryResponse.json();
-		console.log({ usage: json.usage, choices: json.choices });
 
 		return json.choices
 			.map((choice: { text: string }) => choice.text.replaceAll('\n', ''))
