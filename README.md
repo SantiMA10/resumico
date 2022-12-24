@@ -17,6 +17,7 @@
 # Requisitos
 
 Para hacer funcionar el bot necesitaras:
+- nodejs >= 16
 - API token para enviar mensajes en WhatsApp.
 - API token para GPT-3 de OpenAI.
 - (opcional) Si quieres usar "Google Cloud Speech to Text":
@@ -53,6 +54,7 @@ SPEECH_TO_TEXT_SERVICE="" // Un valor entre "google" (si usas Google Cloud Speec
 # Desplegar
 
 ```
+yarn install
 yarn build // para transformar TypeScript en JavaScript
 yarn start // para arrancar el servidor
 ```

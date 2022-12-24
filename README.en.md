@@ -15,6 +15,7 @@
 # Requirements
 
 You will need:
+- NodeJS >= 16
 - WhatsApp API token.
 - OpenAI API token.
 - (optional) If you want to use "Google Cloud Speech to Text":
@@ -52,6 +53,7 @@ SPEECH_TO_TEXT_SERVICE="" // A value between "google" (if you want to use Google
 # Deploy
 
 ```
+yarn install
 yarn build // to build ts into js
 yarn start // to start the server
 ```
