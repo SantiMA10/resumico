@@ -1,5 +1,7 @@
 <p align="center">
-   <img src="./.github/resumico.svg">
+   <a href="https://resumi.co">
+      <img src="./.github/resumico.svg">
+   </a>
    <p align="center">
       <a href="#requirements">🧰 Requirements</a> -
       <a href="#configuration">🛠️ Configuration</a> - 
@@ -11,6 +13,9 @@
       A WhatApp bot to transcribe and summarize audio messages.
    </p>
 </p>
+
+> **Note**
+> You can also join [the waiting list](https://resumi.co) to test the alpha version.
 
 # Requirements
 

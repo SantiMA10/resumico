@@ -1,5 +1,7 @@
 <p align="center">
-   <img src="./.github/resumico.svg">
+   <a href="https://resumi.co">
+      <img src="./.github/resumico.svg">
+   </a>
    <p align="center">
       <a href="#requisitos">🧰 Requisitos</a> -
       <a href="#configuracion">🛠️ Configuración</a> - 
@@ -12,7 +14,8 @@
    </p>
 </p>
 
-
+> **Note**
+> También te puedes apuntar a [la lista de espera](https://resumi.co) para la alpha.
 
 # Requisitos
 
