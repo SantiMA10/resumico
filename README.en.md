@@ -1,17 +1,17 @@
 <p align="center">
    <img src="./.github/resumico.svg">
    <p align="center">
-      <a href="#requisitos">🛠️ Requisitos</a> -
-      <a href="#configuracion">🚀 Configuración</a> - 
-      <a href="#licencia">⚖️ Licencia</a> - 
-      <a href="./README.en.md">🌍 English</a>
+      <a href="#requirements">🛠️ Requirements</a> -
+      <a href="#configuration">🚀 Configuration</a> - 
+      <a href="#license">⚖️ License</a> - 
+      <a href="./README.md">🌍 Español</a>
    </p>
    <p align="center">
-      Un bot de WhatsApp que te permite transcribir y resumir audios.
+      A WhatApp bot to transcribe and summarize audio messages.
    </p>
 </p>
 
-# Requisitos
+# Requirements
 
 Para hacer funcionar el bot necesitaras:
 - API token para enviar mensajes en WhatsApp.
@@ -26,9 +26,9 @@ Para hacer funcionar el bot necesitaras:
 
 ## WhatsApp
 
-1. Crear una [applicación de Meta](https://developers.facebook.com/apps/create/) de tipo "business".
-2. Cuando crees la cuenta pulsa en "Add products" y elige WhatsApp.
-3. En la sección de WhatApp:
+1. Create a [business Meta App](https://developers.facebook.com/apps/create/).
+2. Then click on "Add products" and choose WhatsApp.
+3. In the WhatApp section:
    1. Configure your webhook endpoint.
       1. Add the verification token in the `WHATSAPP_VERIFY_TOKEN` env var.
       2. In webhook fields choose `messages`.
