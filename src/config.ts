@@ -13,6 +13,7 @@ const config = z.object({
 		location: z.string(),
 		mode: z.string().regex(/appengine|http/),
 		url: z.string(),
+		service: z.string().regex(/google|http/),
 	}),
 	files: z.object({
 		path: z.string(),
@@ -42,6 +43,7 @@ const testConfig: Config = {
 		location: 'location',
 		mode: 'appengine',
 		url: '/tasks',
+		service: 'google',
 	},
 	files: {
 		path: '/tmp',
@@ -70,7 +72,8 @@ const envConfig = {
 		queue: process.env.GCLOUD_TASK_QUEUE,
 		location: process.env.GCLOUD_LOCATION,
 		mode: process.env.GCLOUD_TASK_MODE,
-		url: process.env.GCLOUD_TASK_URL,
+		url: process.env.TASK_URL,
+		service: process.env.TASK_SERVICE,
 	},
 	files: {
 		path: process.env.FILE_DOWNLOAD_PATH,

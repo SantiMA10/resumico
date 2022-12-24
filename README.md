@@ -38,10 +38,12 @@ FILE_DOWNLOAD_PATH="/tmp" // lugar donde se descargan los audios de forma tempor
 
 GCLOUD_BUCKET="" // nombre del bucket en Google Cloud
 GCLOUD_TASK_QUEUE="" // nombre de la cola en Google Cloud Task
-GCLOUD_TASK_URL="" // URL a la que Google Cloud Task tiene que enviar las task. Ejemplo: https://tu-servicio.com/tasks
 GCLOUD_LOCATION="" // Region en la que se encuenta Google Cloud Task
 GCLOUD_TASK_MODE="" // Un valor entre "appengine" (si utilizas AppEngine) o "http" si usas otros servicios
 GCLOUD_PROJECT="" // Nombre de tu proyecto de Google Cloud
+
+TASK_URL="" // URL a la que Google Cloud Task tiene que enviar las task. Ejemplo: https://tu-servicio.com/tasks
+TASK_SERVICE="" // Un valor entre "google" (si utilizas Google Cloud Tasks) o "http" si no quieres usar nada
 
 SPEECH_TO_TEXT_SERVICE="" // Un valor entre "google" (si usas Google Cloud Speech to Text) o "whisper" (si quieres usar whisper)
 ```

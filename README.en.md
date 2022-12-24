@@ -27,23 +27,25 @@ You will need:
 Copy the `.env.example` file as `.env` or add the following env vars in your environment.
 
 ```text
-OPEN_AI_GPT3_TOKEN="" // OpenAI token
+OPEN_AI_GPT3_TOKEN="" // OpenAI token.
 
-WHATSAPP_TOKEN="" // WhatsApp sender token
+WHATSAPP_TOKEN="" // WhatsApp sender token.
 WHATSAPP_API_VERSION="v15.0"
-WHATSAPP_SENDER="" // the phone that will send the messages
-WHATSAPP_VERIFY_TOKEN="" // a random token to verify your webhook with WhatsApp
+WHATSAPP_SENDER="" // the phone that will send the messages.
+WHATSAPP_VERIFY_TOKEN="" // a random token to verify your webhook with WhatsApp.
 
-FILE_DOWNLOAD_PATH="/tmp" // The folder in which the temporal files are going to be stored
+FILE_DOWNLOAD_PATH="/tmp" // The folder in which the temporal files are going to be stored.
 
 GCLOUD_BUCKET="" // Your Google Cloud Storage Bucket.
 GCLOUD_TASK_QUEUE="" // You queue from Google Cloud Task.
-GCLOUD_TASK_URL="" // The URL of your service. Example: https://tu-servicio.com/tasks
 GCLOUD_LOCATION="" // Your Google Cloud Task region.
 GCLOUD_TASK_MODE="" // A value between "appengine" (if you use AppEngine in Google Cloud Tasks) or "http" if you use other service.
-GCLOUD_PROJECT="" // Your Google Cloud project name
+GCLOUD_PROJECT="" // Your Google Cloud project name.
 
-SPEECH_TO_TEXT_SERVICE="" // A value between "google" (if you want to use Google Cloud Speech to Text) or "whisper" (if you want to use whisper)
+TASK_URL="" // The URL of your service. Example: https://tu-servicio.com/tasks
+TASK_SERVICE="" // A value between "google" (if you want to use Google Cloud Tasks) or "http" (if you don't want a task service).
+
+SPEECH_TO_TEXT_SERVICE="" // A value between "google" (if you want to use Google Cloud Speech to Text) or "whisper" (if you want to use whisper).
 ```
 
 # License
