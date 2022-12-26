@@ -9,6 +9,13 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  PROJECT_ID: ${{ secrets.PROJECT_ID }}
+  GAR_LOCATION: ${{ secrets.GAR_LOCATION }}
+  REPOSITORY: ${{ secrets.REPOSITORY }}
+  SERVICE: ${{ secrets.SERVICE }}
+  REGION: ${{ secrets.REGION }}
+
 jobs:
   test-unit:
     runs-on: ubuntu-latest
