@@ -16,13 +16,13 @@ export class WhisperSpeechToTextService implements SpeechToTextService {
 		}
 		try {
 			const { path } = this.config.files;
-			execSync(`whisper ${filePath} --model tiny -o ${path}`); // , { stdio: 'inherit' }
+			execSync(`whisper ${filePath} --model base -o ${path}`); // , { stdio: 'inherit' }
 			const text = (await readFile(`${filePath}.txt`)).toString();
 			const duration = (await getAudioDurationInSeconds(filePath)) * 1000;
 
 			await this.removeAllFiles(filePath);
 
-			return { text: text.replaceAll('\n', ''), duration };
+			return { text: text.replaceAll('\n', ' '), duration };
 		} catch (error) {
 			await this.removeAllFiles(filePath);
 
