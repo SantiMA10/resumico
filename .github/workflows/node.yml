@@ -113,4 +113,4 @@ jobs:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
           image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}
-          flags: '--max-instances 1 --cpu 1 --memory 4Gi --allow-unauthenticated'
+          flags: '--max-instances 1 --cpu 2 --memory 4Gi --allow-unauthenticated'
