@@ -18,7 +18,7 @@ export class GPT3SummaryService implements SummaryService {
 			body: JSON.stringify({
 				model: 'text-davinci-003',
 				prompt: `${message}\n\nTL;DR;\n\n`,
-				temperature: 0.7,
+				temperature: 0.3,
 				max_tokens: 120,
 				top_p: 1.0,
 				frequency_penalty: 0.0,
