@@ -22,7 +22,7 @@ export class GPT3SummaryService implements SummaryService {
 				max_tokens: 120,
 				top_p: 1.0,
 				frequency_penalty: 0.0,
-				presence_penalty: 1,
+				presence_penalty: 0.0,
 			}),
 		});
 
