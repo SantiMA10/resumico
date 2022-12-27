@@ -72,7 +72,7 @@ jobs:
         id: 'deploy'
         uses: 'google-github-actions/deploy-appengine@v1'
 
-   deploy-worker-beta:
+  deploy-worker-beta:
     name: deploy worker to beta
     environment: beta
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
