@@ -30,16 +30,11 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: 'yarn test'
 
-  deploy-beta:
-    name: deploy to beta
+  deploy-api-beta:
+    name: deploy api to beta
     environment: beta
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [test-unit]
-
-    # Add 'id-token' with the intended permissions for workload identity federation
-    permissions:
-      contents: 'read'
-      id-token: 'write'
 
     runs-on: ubuntu-latest
     steps:
@@ -65,6 +60,40 @@ jobs:
         env:
           SECRETS_ENV: ${{ secrets.ENV }}
 
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
+
+      - name: Deploy to AppEngine
+        id: 'deploy'
+        uses: 'google-github-actions/deploy-appengine@v1'
+
+   deploy-worker-beta:
+    name: deploy worker to beta
+    environment: beta
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [test-unit]
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Add secrets
+        run: 'echo "$SECRETS_ENV" > .env'
+        env:
+          SECRETS_ENV: ${{ secrets.ENV }}
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -84,4 +113,4 @@ jobs:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
           image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}
-          flags: '--max-instances 1 --cpu 1 --memory 2Gi --allow-unauthenticated'
+          flags: '--max-instances 1 --cpu 1 --memory 4Gi --allow-unauthenticated'
