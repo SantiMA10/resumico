@@ -1,6 +1,6 @@
 <p align="center">
    <a href="https://www.resumi.co">
-      <img src="./.github/resumico.png">
+      <img src="../.github/resumico.png">
    </a>
    <p align="center">
       <a href="./ABOUT.md">🌍 Español</a>
