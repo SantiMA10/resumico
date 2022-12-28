@@ -17,4 +17,4 @@ Resumico no comparte información.
 
 ---
 
-Si tienes algun problema y necesitas contactarnos puedes hacerlo en: hello@resumi.co
+Si tienes algun problema y necesitas contactarnos puedes hacerlo en: hola@resumi.co
