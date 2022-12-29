@@ -123,11 +123,6 @@ jobs:
           username: _json_key
           password: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Add secrets
-        run: 'echo "$SECRETS_ENV" > .env'
-        env:
-          SECRETS_ENV: ${{ secrets.ENV }}
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -140,6 +135,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Add secrets
+        run: 'echo "$SECRETS_ENV" > .env'
+        env:
+          SECRETS_ENV: ${{ secrets.ENV }}
+
       - name: Deploy to Cloud Run
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v0
@@ -148,6 +148,7 @@ jobs:
           region: ${{ env.REGION }}
           image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}
           flags: '--max-instances 1 --cpu 1 --memory 2Gi --allow-unauthenticated --ingress internal'
+          env_vars_file: './.env'
 
   deploy-worker-prod:
     name: deploy worker to prod
@@ -174,11 +175,6 @@ jobs:
           username: _json_key
           password: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Add secrets
-        run: 'echo "$SECRETS_ENV" > .env'
-        env:
-          SECRETS_ENV: ${{ secrets.ENV }}
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -191,6 +187,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Add secrets
+        run: 'echo "$SECRETS_ENV" > .env'
+        env:
+          SECRETS_ENV: ${{ secrets.ENV }}
+
       - name: Deploy to Cloud Run
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v0
@@ -199,3 +200,4 @@ jobs:
           region: ${{ env.REGION }}
           image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}
           flags: '--max-instances 1 --cpu 1 --memory 2Gi --allow-unauthenticated --ingress internal'
+          env_vars_file: './.env'
