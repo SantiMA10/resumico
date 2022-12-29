@@ -63,6 +63,9 @@ export class GCSpeechToTextService implements SpeechToTextService {
 
 	private async uploadFileFromBucket(filePath: string, audioId: string): Promise<string> {
 		const { bucket } = this.config.files;
+		if (!bucket) {
+			throw new Error('Missing bucket configuration');
+		}
 		const fileName = `${audioId}.mp3`;
 
 		const storage = new Storage();
@@ -73,6 +76,9 @@ export class GCSpeechToTextService implements SpeechToTextService {
 
 	private async removeFileFromBucket(audioId: string): Promise<void> {
 		const { bucket } = this.config.files;
+		if (!bucket) {
+			throw new Error('Missing bucket configuration');
+		}
 		const fileName = `${audioId}.mp3`;
 
 		const storage = new Storage();

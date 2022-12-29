@@ -17,7 +17,7 @@ const config = z.object({
 	}),
 	files: z.object({
 		path: z.string(),
-		bucket: z.string(),
+		bucket: z.string().optional(),
 	}),
 	openai: z.object({
 		token: z.string(),
