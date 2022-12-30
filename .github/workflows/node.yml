@@ -54,6 +54,9 @@ jobs:
         env:
           SECRETS_ENV: ${{ secrets.ENV }}
 
+      - name: Add opentelemetry service name
+        run: 'echo "OTEL_SERVICE_NAME=resumico-api-beta" >> .env'
+
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
         with:
@@ -87,6 +90,9 @@ jobs:
         run: 'echo "$SECRETS_ENV" > .env'
         env:
           SECRETS_ENV: ${{ secrets.ENV }}
+
+      - name: Add opentelemetry service name
+        run: 'echo "OTEL_SERVICE_NAME=resumico-api" >> .env'
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
@@ -165,6 +171,7 @@ jobs:
           image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GAR_PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.GAR_SERVICE }}:${{ github.sha }}
           flags: '--max-instances 1 --cpu 1 --memory 2Gi --allow-unauthenticated --ingress internal'
           env_vars_file: './.env'
+          env_vars: OTEL_SERVICE_NAME=resumico-worker-beta
 
   deploy-worker-prod:
     name: deploy worker to prod
@@ -194,3 +201,4 @@ jobs:
           image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GAR_PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.GAR_SERVICE }}:${{ github.sha }}
           flags: '--max-instances 1 --cpu 1 --memory 2Gi --allow-unauthenticated --ingress internal'
           env_vars_file: './.env'
+          env_vars: OTEL_SERVICE_NAME=resumico-worker

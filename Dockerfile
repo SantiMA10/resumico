@@ -25,4 +25,4 @@ RUN yarn build
 ENV NODE_ENV="production"
 
 # Run the web service on container startup.
-CMD [ "yarn", "run", "start" ]
+CMD [ "yarn", "run", "start:o11y" ]

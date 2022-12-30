@@ -11,14 +11,16 @@
   "license": "CC-BY-NC-4.0",
   "scripts": {
     "lint": "eslint . --ext .ts,.js --ignore-path .gitignore .",
+    "prebuild": "rm -rf ./dist",
     "build": "npx tsc",
     "start": "node -r dotenv/config dist/src/index.js",
+    "start:o11y": "node -r dotenv/config -r ./o11y.js dist/src/index.js",
     "start:dev": "ts-node-dev -r dotenv/config --ignore-watch node_modules ./src/index.ts",
     "test": "APP_ENV=\"test\" jest",
     "test:watch": "yarn test --watch",
-    "predeploy:app": "rm -rf ./dist && yarn build",
+    "predeploy:app": "yarn build",
     "deploy:app": "gcloud app deploy",
-    "predeploy:run": "rm -rf ./dist && yarn build",
+    "predeploy:run": "yarn build",
     "deploy:run": "gcloud run deploy --max-instances 1 --cpu 1 --memory 2Gi --source ."
   },
   "dependencies": {
@@ -26,6 +28,9 @@
     "@google-cloud/storage": "^6.8.0",
     "@google-cloud/tasks": "^3.0.5",
     "@hapi/hapi": "^21.1.0",
+    "@opentelemetry/auto-instrumentations-node": "0.34.0",
+    "@opentelemetry/exporter-trace-otlp-proto": "0.34.0",
+    "@opentelemetry/sdk-node": "0.34.0",
     "dotenv": "^16.0.3",
     "fluent-ffmpeg": "^2.1.2",
     "get-audio-duration": "^3.1.1",
