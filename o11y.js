@@ -6,6 +6,8 @@ const process = require('process');
 const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
 const { NodeSDK } = require('@opentelemetry/sdk-node');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-proto');
+const { PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics');
+const { OTLPMetricExporter } = require('@opentelemetry/exporter-metrics-otlp-proto');
 
 const traceExporter = new OTLPTraceExporter({
 	headers: {
@@ -13,9 +15,19 @@ const traceExporter = new OTLPTraceExporter({
 	},
 });
 
+const metricReader = new PeriodicExportingMetricReader({
+	exporter: new OTLPMetricExporter({
+		headers: {
+			'x-honeycomb-team': process.env.OTEL_TOKEN,
+		},
+	}),
+	exportIntervalMillis: 1000,
+});
+
 const sdk = new NodeSDK({
 	traceExporter,
 	instrumentations: [getNodeAutoInstrumentations()],
+	metricReader,
 });
 
 sdk
