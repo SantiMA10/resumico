@@ -8,6 +8,7 @@ import { WhisperSpeechToTextService } from '../../services/speechToText/WhisperS
 import { GPT3SummaryService } from '../../services/summary/GPT3SummaryService';
 import { OpenTelemetryMetricsService } from '../../services/telemetry/OpenTelemetryMetricsService';
 import { AskAudioOptions } from '../../useCases/askAudioOptions/AskAudioOptions';
+import { SendFeedbackForm } from '../../useCases/sendFeedbackForm/SendFeedbackForm';
 import { SendSummary } from '../../useCases/sendSummary/SendSummary';
 import { SendTranscription } from '../../useCases/sendTranscription/SendTranscription';
 import { SendTranscriptionAndSummary } from '../../useCases/sendTranscriptionAndSummary/SendTranscriptionAndSummary';
@@ -83,6 +84,16 @@ export const routes = (): ServerRoute[] => {
 						await sendSummary.process({
 							messageId: payload.messageId,
 							audioId: payload.audioId,
+							user: payload.user,
+						});
+
+						return h.response().code(StatusCodes.NO_CONTENT);
+					}
+
+					if ('name' in payload && payload.name === 'feedback') {
+						const sendFeedbackForm = new SendFeedbackForm(messageService, metricsService);
+						await sendFeedbackForm.process({
+							messageId: payload.messageId,
 							user: payload.user,
 						});
 
