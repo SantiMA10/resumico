@@ -21,7 +21,7 @@ const metricReader = new PeriodicExportingMetricReader({
 			'api-key': process.env.OTEL_TOKEN,
 		},
 	}),
-	exportIntervalMillis: 1000,
+	exportIntervalMillis: 60000,
 });
 
 const sdk = new NodeSDK({
