@@ -14,6 +14,22 @@ const config = z.object({
 		mode: z.string().regex(/appengine|http/),
 		url: z.string(),
 		service: z.string().regex(/google|http/),
+		api: z
+			.object({
+				queue: z.string(),
+				mode: z.string().regex(/appengine|http/),
+				url: z.string(),
+				service: z.string().regex(/google|http/),
+			})
+			.optional(),
+		worker: z
+			.object({
+				queue: z.string(),
+				mode: z.string().regex(/appengine|http/),
+				url: z.string(),
+				service: z.string().regex(/google|http/),
+			})
+			.optional(),
 	}),
 	files: z.object({
 		path: z.string(),
@@ -40,6 +56,18 @@ const testConfig: Config = {
 		apiVersion: 'apiVersion',
 	},
 	tasks: {
+		worker: {
+			queue: 'queue',
+			mode: 'mode',
+			url: '/task',
+			service: 'google',
+		},
+		api: {
+			queue: 'queue',
+			mode: 'mode',
+			url: '/task',
+			service: 'google',
+		},
 		project: 'project',
 		queue: 'queue',
 		location: 'location',
@@ -71,6 +99,18 @@ const envConfig = {
 		apiVersion: process.env.WHATSAPP_API_VERSION,
 	},
 	tasks: {
+		worker: {
+			queue: process.env.GCLOUD_WORKER_TASK_QUEUE,
+			mode: process.env.GCLOUD_WORKER_TASK_MODE,
+			url: process.env.WORKER_TASK_URL,
+			service: process.env.WORKER_TASK_SERVICE,
+		},
+		api: {
+			queue: process.env.GCLOUD_API_TASK_QUEUE,
+			mode: process.env.GCLOUD_API_TASK_MODE,
+			url: process.env.API_TASK_URL,
+			service: process.env.API_TASK_SERVICE,
+		},
 		project: process.env.GCLOUD_PROJECT,
 		queue: process.env.GCLOUD_TASK_QUEUE,
 		location: process.env.GCLOUD_LOCATION,

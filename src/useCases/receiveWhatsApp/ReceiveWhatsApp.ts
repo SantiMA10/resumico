@@ -52,6 +52,7 @@ export class ReceiveWhatsApp {
 				messageId: message.id,
 				audioId: message.audio.id,
 				user: message.from,
+				service: 'api',
 			};
 		}
 
@@ -61,6 +62,7 @@ export class ReceiveWhatsApp {
 				messageId: message.id,
 				audioId: message.interactive.button_reply.id.split(':')[1],
 				user: message.from,
+				service: 'worker',
 			};
 		}
 
@@ -70,6 +72,7 @@ export class ReceiveWhatsApp {
 				messageId: message.id,
 				audioId: message.interactive.button_reply.id.split(':')[1],
 				user: message.from,
+				service: 'worker',
 			};
 		}
 
@@ -78,6 +81,7 @@ export class ReceiveWhatsApp {
 				name: 'configuration',
 				messageId: message.id,
 				user: message.from,
+				service: 'api',
 			};
 		}
 
@@ -87,6 +91,7 @@ export class ReceiveWhatsApp {
 				messageId: message.id,
 				audioId: message.interactive.button_reply.id.split(':')[1],
 				user: message.from,
+				service: 'worker',
 			};
 		}
 
@@ -94,6 +99,7 @@ export class ReceiveWhatsApp {
 			name: 'feedback',
 			messageId: message.id,
 			user: message.from,
+			service: 'api',
 		};
 	}
 }
