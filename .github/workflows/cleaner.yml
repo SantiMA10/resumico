@@ -19,7 +19,6 @@ env:
 
 jobs:
   artifact-registry-cleaner:
-    runs-on: 'ubuntu-latest'
     environment: prod
 
     runs-on: ubuntu-latest
@@ -46,4 +45,3 @@ jobs:
             -grace=48h
             -keep=2
             -dry_run=true
-      
