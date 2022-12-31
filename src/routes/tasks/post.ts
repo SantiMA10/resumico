@@ -6,6 +6,7 @@ import { WhatsAppService } from '../../services/message/WhatsAppService';
 import { GCSpeechToTextService } from '../../services/speechToText/GCSpeechToTextService';
 import { WhisperSpeechToTextService } from '../../services/speechToText/WhisperSpeechToTextService';
 import { GPT3SummaryService } from '../../services/summary/GPT3SummaryService';
+import { OpenTelemetryMetricsService } from '../../services/telemetry/OpenTelemetryMetricsService';
 import { AskAudioOptions } from '../../useCases/askAudioOptions/AskAudioOptions';
 import { SendSummary } from '../../useCases/sendSummary/SendSummary';
 import { SendTranscription } from '../../useCases/sendTranscription/SendTranscription';
@@ -20,11 +21,12 @@ export const routes = (): ServerRoute[] => {
 				try {
 					const config = getConfig();
 
+					const metricsService = new OpenTelemetryMetricsService();
 					const messageService = new WhatsAppService(config);
 					const speechToText =
 						config.speechToText.service === 'google'
 							? new GCSpeechToTextService(config)
-							: new WhisperSpeechToTextService(config);
+							: new WhisperSpeechToTextService(config, metricsService);
 					const summary = new GPT3SummaryService(config);
 
 					const payload = JSON.parse(req.payload as string);
@@ -45,6 +47,7 @@ export const routes = (): ServerRoute[] => {
 							messageService,
 							speechToText,
 							summary,
+							metricsService,
 						);
 						await sendTranscriptionAndSummary.process({
 							messageId: payload.messageId,
@@ -56,7 +59,11 @@ export const routes = (): ServerRoute[] => {
 					}
 
 					if ('name' in payload && payload.name === 'transcription') {
-						const sendTranscription = new SendTranscription(messageService, speechToText);
+						const sendTranscription = new SendTranscription(
+							messageService,
+							speechToText,
+							metricsService,
+						);
 						await sendTranscription.process({
 							messageId: payload.messageId,
 							audioId: payload.audioId,
@@ -67,7 +74,12 @@ export const routes = (): ServerRoute[] => {
 					}
 
 					if ('name' in payload && payload.name === 'summary') {
-						const sendSummary = new SendSummary(messageService, speechToText, summary);
+						const sendSummary = new SendSummary(
+							messageService,
+							speechToText,
+							summary,
+							metricsService,
+						);
 						await sendSummary.process({
 							messageId: payload.messageId,
 							audioId: payload.audioId,

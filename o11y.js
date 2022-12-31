@@ -19,6 +19,7 @@ const metricReader = new PeriodicExportingMetricReader({
 	exporter: new OTLPMetricExporter({
 		headers: {
 			'x-honeycomb-team': process.env.OTEL_TOKEN,
+			'x-honeycomb-dataset': 'resumico-metrics',
 		},
 	}),
 	exportIntervalMillis: 1000,

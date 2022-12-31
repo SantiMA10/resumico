@@ -1,6 +1,8 @@
+import { CounterMetrics, HistogramMetrics } from '../../entities/Metrics';
 import { WhatsAppService } from '../../services/message/WhatsAppService';
 import { SpeechToTextService } from '../../services/speechToText/SpeechToTextService';
 import { SummaryService } from '../../services/summary/SummaryService';
+import { MetricsService } from '../../services/telemetry/MetricsService';
 
 interface Command {
 	messageId: string;
@@ -13,12 +15,16 @@ export class SendSummary {
 		private messageService: WhatsAppService,
 		private speechToTextService: SpeechToTextService,
 		private summarizeService: SummaryService,
+		private metricsService?: MetricsService,
 	) {}
 
 	public async process(command: Command) {
 		const audioId = command.audioId;
 		const userNumber = command.user;
 		const messageId = command.messageId;
+
+		await this.metricsService?.incrementCounter(CounterMetrics.SEND_SUMMARY_STARTED);
+		const startTime = new Date().getTime();
 
 		try {
 			const { filePath } = await this.messageService.downloadAudio(audioId);
@@ -40,7 +46,14 @@ export class SendSummary {
 				messageId,
 			);
 			await this.messageService.addReaction(messageId, '✅', userNumber);
+			await this.metricsService?.incrementCounter(CounterMetrics.SEND_SUMMARY_COMPLETED);
+			const endTime = new Date().getTime();
+			await this.metricsService?.recordHistogram(
+				HistogramMetrics.SEND_SUMMARY_TOTAL_TIME,
+				endTime - startTime,
+			);
 		} catch (error) {
+			await this.metricsService?.incrementCounter(CounterMetrics.SEND_SUMMARY_FAILED);
 			await this.messageService.addReaction(messageId, '❌', userNumber);
 
 			throw error;
