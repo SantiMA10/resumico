@@ -11,15 +11,14 @@ const { OTLPMetricExporter } = require('@opentelemetry/exporter-metrics-otlp-pro
 
 const traceExporter = new OTLPTraceExporter({
 	headers: {
-		'x-honeycomb-team': process.env.OTEL_TOKEN,
+		'api-key': process.env.OTEL_TOKEN,
 	},
 });
 
 const metricReader = new PeriodicExportingMetricReader({
 	exporter: new OTLPMetricExporter({
 		headers: {
-			'x-honeycomb-team': process.env.OTEL_TOKEN,
-			'x-honeycomb-dataset': 'resumico-metrics',
+			'api-key': process.env.OTEL_TOKEN,
 		},
 	}),
 	exportIntervalMillis: 1000,
