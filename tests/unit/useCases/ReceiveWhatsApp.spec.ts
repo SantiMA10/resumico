@@ -115,4 +115,38 @@ describe('ReceiveWhatsApp', () => {
 			},
 		});
 	});
+
+	it('creates an "configuration" task with the messageId and user from the both reply message', async () => {
+		const command = new ReplyMessageBuilder()
+			.withMessageId('messageId')
+			.sentFrom('user')
+			.askingForConfiguration()
+			.build();
+		await subject.receive(command);
+
+		expect(taskService.createTask).toHaveBeenCalledWith({
+			body: {
+				name: 'configuration',
+				messageId: 'messageId',
+				user: 'user',
+			},
+		});
+	});
+
+	it('creates an "feedback" task with the messageId and user from the both reply message', async () => {
+		const command = new ReplyMessageBuilder()
+			.withMessageId('messageId')
+			.sentFrom('user')
+			.askingForFeedbackForm()
+			.build();
+		await subject.receive(command);
+
+		expect(taskService.createTask).toHaveBeenCalledWith({
+			body: {
+				name: 'feedback',
+				messageId: 'messageId',
+				user: 'user',
+			},
+		});
+	});
 });

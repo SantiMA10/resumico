@@ -73,10 +73,26 @@ export class ReceiveWhatsApp {
 			};
 		}
 
+		if (message.interactive.button_reply.id.includes('configuration')) {
+			return {
+				name: 'configuration',
+				messageId: message.id,
+				user: message.from,
+			};
+		}
+
+		if (message.interactive.button_reply.id.includes('all')) {
+			return {
+				name: 'transcription-and-summary',
+				messageId: message.id,
+				audioId: message.interactive.button_reply.id.split(':')[1],
+				user: message.from,
+			};
+		}
+
 		return {
-			name: 'transcription-and-summary',
+			name: 'feedback',
 			messageId: message.id,
-			audioId: message.interactive.button_reply.id.split(':')[1],
 			user: message.from,
 		};
 	}

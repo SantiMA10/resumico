@@ -35,6 +35,18 @@ export class ReplyMessageBuilder {
 		return this;
 	}
 
+	public askingForConfiguration() {
+		this.buttonReplayId = `configuration`;
+
+		return this;
+	}
+
+	public askingForFeedbackForm() {
+		this.buttonReplayId = `feedback`;
+
+		return this;
+	}
+
 	public build(): ReplyWhatsAppMessage {
 		return {
 			entry: [

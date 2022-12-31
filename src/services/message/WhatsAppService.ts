@@ -182,6 +182,13 @@ export class WhatsAppService {
 						{
 							type: 'reply',
 							reply: {
+								id: 'feedback',
+								title: 'Feedback',
+							},
+						},
+						{
+							type: 'reply',
+							reply: {
 								id: 'configuration',
 								title: 'Configuración',
 							},
