@@ -58,13 +58,13 @@ const testConfig: Config = {
 	tasks: {
 		worker: {
 			queue: 'queue',
-			mode: 'mode',
+			mode: 'http',
 			url: '/task',
-			service: 'google',
+			service: 'http',
 		},
 		api: {
 			queue: 'queue',
-			mode: 'mode',
+			mode: 'appengine',
 			url: '/task',
 			service: 'google',
 		},

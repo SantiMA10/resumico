@@ -13,7 +13,7 @@ describe('ReceiveWhatsApp', () => {
 	beforeEach(() => {
 		taskService = {
 			createTask: jest.fn(),
-		};
+		} as unknown as TaskService;
 		messageService = {
 			downloadAudio: jest.fn(),
 			markAsRead: jest.fn(),
@@ -35,7 +35,7 @@ describe('ReceiveWhatsApp', () => {
 		const command = new TextMessageBuilder().build();
 		await subject.receive(command);
 
-		expect(taskService.createTask).not.toHaveBeenCalledWith({ body: command });
+		expect(taskService.createTask).not.toHaveBeenCalled();
 	});
 
 	it('reacts with a red cross if the is not an audio or reply', async () => {
@@ -69,6 +69,7 @@ describe('ReceiveWhatsApp', () => {
 
 		expect(taskService.createTask).toHaveBeenCalledWith({
 			body: { name: 'ask-audio-options', messageId: 'messageId', audioId: 'audioId', user: 'user' },
+			service: 'api',
 		});
 	});
 
@@ -82,6 +83,7 @@ describe('ReceiveWhatsApp', () => {
 
 		expect(taskService.createTask).toHaveBeenCalledWith({
 			body: { name: 'transcription', messageId: 'messageId', audioId: 'audioId', user: 'user' },
+			service: 'worker',
 		});
 	});
 
@@ -95,6 +97,7 @@ describe('ReceiveWhatsApp', () => {
 
 		expect(taskService.createTask).toHaveBeenCalledWith({
 			body: { name: 'summary', messageId: 'messageId', audioId: 'audioId', user: 'user' },
+			service: 'worker',
 		});
 	});
 
@@ -113,6 +116,7 @@ describe('ReceiveWhatsApp', () => {
 				audioId: 'audioId',
 				user: 'user',
 			},
+			service: 'worker',
 		});
 	});
 
@@ -130,6 +134,7 @@ describe('ReceiveWhatsApp', () => {
 				messageId: 'messageId',
 				user: 'user',
 			},
+			service: 'api',
 		});
 	});
 
@@ -147,6 +152,7 @@ describe('ReceiveWhatsApp', () => {
 				messageId: 'messageId',
 				user: 'user',
 			},
+			service: 'api',
 		});
 	});
 });

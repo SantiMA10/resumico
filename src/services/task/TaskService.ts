@@ -1,3 +1,8 @@
+export interface TaskCommand {
+	body: unknown;
+	service: 'worker' | 'api';
+}
+
 export interface TaskService {
-	createTask: (command: { body: unknown; service: 'worker' | 'api' }) => Promise<void>;
+	createTask: (command: TaskCommand) => Promise<void>;
 }

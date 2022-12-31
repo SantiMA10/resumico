@@ -1,12 +1,7 @@
 import { CloudTasksClient, protos } from '@google-cloud/tasks';
 
 import { Config } from '../../config';
-import { TaskService } from './TaskService';
-
-interface TaskCommand {
-	body: unknown;
-	service: 'worker' | 'api';
-}
+import { TaskCommand, TaskService } from './TaskService';
 
 export class GCTaskService implements TaskService {
 	public constructor(private config: Config) {}

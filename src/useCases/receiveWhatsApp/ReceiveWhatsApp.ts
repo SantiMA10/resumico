@@ -2,10 +2,7 @@ import { AudioWhatsAppMessage } from '../../entities/whatsAppMessages/AudioWhats
 import { ReplyWhatsAppMessage } from '../../entities/whatsAppMessages/ReplyWhatsAppMessage';
 import { WhatsAppMessage } from '../../entities/whatsAppMessages/WhatsAppMessage';
 import { WhatsAppService } from '../../services/message/WhatsAppService';
-
-interface TaskService {
-	createTask: (command: { body: unknown }) => Promise<void>;
-}
+import { TaskCommand, TaskService } from '../../services/task/TaskService';
 
 export class ReceiveWhatsApp {
 	public constructor(private taskService: TaskService, private messageService: WhatsAppService) {}
@@ -27,7 +24,7 @@ export class ReceiveWhatsApp {
 
 		await Promise.all([
 			this.messageService.addReaction(messageId, '⏳', from),
-			this.taskService.createTask({ body: this.createTaskBody(message) }),
+			this.taskService.createTask(this.createTaskCommand(message)),
 		]);
 	}
 
@@ -43,62 +40,74 @@ export class ReceiveWhatsApp {
 		return message?.type === 'interactive' && message?.interactive?.type === 'button_reply';
 	}
 
-	private createTaskBody(received: ReplyWhatsAppMessage | AudioWhatsAppMessage) {
+	private createTaskCommand(received: ReplyWhatsAppMessage | AudioWhatsAppMessage): TaskCommand {
 		const message = received?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
 
 		if (message.type === 'audio') {
 			return {
-				name: 'ask-audio-options',
-				messageId: message.id,
-				audioId: message.audio.id,
-				user: message.from,
+				body: {
+					name: 'ask-audio-options',
+					messageId: message.id,
+					audioId: message.audio.id,
+					user: message.from,
+				},
 				service: 'api',
 			};
 		}
 
 		if (message.interactive.button_reply.id.includes('transcription')) {
 			return {
-				name: 'transcription',
-				messageId: message.id,
-				audioId: message.interactive.button_reply.id.split(':')[1],
-				user: message.from,
+				body: {
+					name: 'transcription',
+					messageId: message.id,
+					audioId: message.interactive.button_reply.id.split(':')[1],
+					user: message.from,
+				},
 				service: 'worker',
 			};
 		}
 
 		if (message.interactive.button_reply.id.includes('summary')) {
 			return {
-				name: 'summary',
-				messageId: message.id,
-				audioId: message.interactive.button_reply.id.split(':')[1],
-				user: message.from,
+				body: {
+					name: 'summary',
+					messageId: message.id,
+					audioId: message.interactive.button_reply.id.split(':')[1],
+					user: message.from,
+				},
 				service: 'worker',
 			};
 		}
 
 		if (message.interactive.button_reply.id.includes('configuration')) {
 			return {
-				name: 'configuration',
-				messageId: message.id,
-				user: message.from,
+				body: {
+					name: 'configuration',
+					messageId: message.id,
+					user: message.from,
+				},
 				service: 'api',
 			};
 		}
 
 		if (message.interactive.button_reply.id.includes('all')) {
 			return {
-				name: 'transcription-and-summary',
-				messageId: message.id,
-				audioId: message.interactive.button_reply.id.split(':')[1],
-				user: message.from,
+				body: {
+					name: 'transcription-and-summary',
+					messageId: message.id,
+					audioId: message.interactive.button_reply.id.split(':')[1],
+					user: message.from,
+				},
 				service: 'worker',
 			};
 		}
 
 		return {
-			name: 'feedback',
-			messageId: message.id,
-			user: message.from,
+			body: {
+				name: 'feedback',
+				messageId: message.id,
+				user: message.from,
+			},
 			service: 'api',
 		};
 	}
