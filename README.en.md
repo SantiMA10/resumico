@@ -53,6 +53,9 @@ TASK_URL="" // The URL of your service. Example: https://tu-servicio.com/tasks
 TASK_SERVICE="" // A value between "google" (if you want to use Google Cloud Tasks) or "http" (if you don't want a task service).
 
 SPEECH_TO_TEXT_SERVICE="" // A value between "google" (if you want to use Google Cloud Speech to Text) or "whisper" (if you want to use whisper).
+
+WHISPER_MODEL="base" // Whisper model you want to use
+WHISPER_LANGUAGE="Spanish" // The language whisper is going to use to transcribe (if empty whisper will auto detect the language)
 ```
 
 # Deploy

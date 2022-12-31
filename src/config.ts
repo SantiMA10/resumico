@@ -24,6 +24,8 @@ const config = z.object({
 	}),
 	speechToText: z.object({
 		service: z.string().regex(/google|whisper/),
+		model: z.string(),
+		language: z.string().optional(),
 	}),
 	summary: z.object({
 		durationForSummary: z.number(),
@@ -54,6 +56,7 @@ const testConfig: Config = {
 	},
 	speechToText: {
 		service: 'whisper',
+		model: 'small',
 	},
 	summary: {
 		durationForSummary: 60000,
@@ -84,6 +87,8 @@ const envConfig = {
 	},
 	speechToText: {
 		service: process.env.SPEECH_TO_TEXT_SERVICE,
+		model: process.env.WHISPER_MODEL,
+		language: process.env.WHISPER_LANGUAGE,
 	},
 	summary: {
 		durationForSummary: process.env.DURATION_FOR_SUMMARY || 60000,

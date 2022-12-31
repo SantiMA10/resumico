@@ -53,6 +53,9 @@ TASK_URL="" // URL a la que Google Cloud Task tiene que enviar las task. Ejemplo
 TASK_SERVICE="" // Un valor entre "google" (si utilizas Google Cloud Tasks) o "http" si no quieres usar nada
 
 SPEECH_TO_TEXT_SERVICE="" // Un valor entre "google" (si usas Google Cloud Speech to Text) o "whisper" (si quieres usar whisper)
+
+WHISPER_MODEL="base" // El modelo de Whisper que quieres usar
+WHISPER_LANGUAGE="Spanish" // El lenguaje que quieres transcribir, se puede dejar el blanco para que whisper trate de auto detectarlo
 ```
 # Desplegar
 

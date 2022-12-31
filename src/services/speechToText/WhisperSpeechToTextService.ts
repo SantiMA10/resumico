@@ -20,9 +20,8 @@ export class WhisperSpeechToTextService implements SpeechToTextService {
 		}
 
 		try {
-			const { path } = this.config.files;
 			const startTime = new Date().getTime();
-			execSync(`whisper ${filePath} --model base -o ${path}`); // , { stdio: 'inherit' }
+			execSync(this.buildWhisperCommand(filePath)); // , { stdio: 'inherit' }
 			const endTime = new Date().getTime();
 			await this.metricsService?.recordHistogram(
 				HistogramMetrics.WHISPER_TRANSCRIPTION_TIME,
@@ -51,5 +50,18 @@ export class WhisperSpeechToTextService implements SpeechToTextService {
 			unlink(`${filePath}.vtt`),
 			unlink(`${filePath}.srt`),
 		]);
+	}
+
+	private buildWhisperCommand(filePath: string) {
+		const { path } = this.config.files;
+		const { model, language } = this.config.speechToText;
+
+		const base = `whisper ${filePath} --model ${model} -o ${path}`;
+
+		if (language) {
+			return `${base} --language ${language}`;
+		}
+
+		return base;
 	}
 }
