@@ -44,4 +44,4 @@ jobs:
             -repo=${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.GAR_PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.GAR_SERVICE }}
             -grace=48h
             -keep=2
-            -dry_run=true
+            -dry-run=true
